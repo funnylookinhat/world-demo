@@ -76,7 +76,7 @@ function init() {
 	camera = new THREE.PerspectiveCamera( 45, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 30000 );
 	
 	// Add ground pattern.
-	var gt = THREE.ImageUtils.loadTexture( "old-models/models-js/grasslight-big.jpg" );
+	var gt = THREE.ImageUtils.loadTexture( "environment-models/textures/grass_texture.png" );
 	var gg = new THREE.PlaneGeometry( 128000, 128000 );
 	var gm = new THREE.MeshPhongMaterial( { color: 0xffffff, map: gt } );
 	var ground = new THREE.Mesh( gg, gm );
