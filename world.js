@@ -71,6 +71,7 @@ var SCREEN_HEIGHT = window.innerHeight;
 
 function init() {
 	
+	$('#loading').remove();
 	scene = new THREE.Scene();
 
 	camera = new THREE.PerspectiveCamera( 45, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 30000 );
