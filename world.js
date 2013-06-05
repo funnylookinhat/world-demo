@@ -260,10 +260,10 @@ window.requestAnimFrame = (function(){
 function run() {
 	(function animloop(){
 		requestAnimFrame(animloop);
-		stats.begin();
+		//stats.begin();
 		render();
 		update();
-		stats.end();
+		//stats.end();
 	})();
 }
 
