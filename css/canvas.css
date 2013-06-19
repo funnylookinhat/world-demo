@@ -13,3 +13,37 @@ html, body {
 	background: #414141;
 }
 
+#loading {
+	color: #ffffff;
+}
+
+#loading h1 {
+	margin: 0px 0px 10px 0px;
+}
+
+#loading h2 {
+	margin: 0px 0px 10px 0px;
+}
+
+h3#loading-file {
+	text-align: center;
+	margin: 10px 0px 10px 0px;
+	color: #ffffff;
+	font-weight: normal;
+}
+
+#loading-progress {
+	display: block;
+	width: 500px;
+	height: 25px;
+	margin: 0px auto;
+	text-align: left;
+}
+
+#loading-progress-bar {
+	display: inline-block;
+	width: 0%;
+	height: 100%;
+	background-color: #336699;
+	max-width: 100%!important;
+}
