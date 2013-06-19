@@ -22,12 +22,22 @@ resourcePaths['clutter'] = {
 	"ivy": 'environment-models/ivy/ivy.js'
 };
 
+var totalResources = 0;
+for( var i in resourcePaths ) {
+	for( var j in resourcePaths[i] ) {
+		totalResources++;
+	}
+}
+var resourcesLoaded = 0;
+
 function loadResources(loader,paths,resources) {
 	if( typeof loader == 'undefined' ||
 		typeof resources == 'undefined' ||
 		typeof paths == 'undefined' ) {
 		return;
 	}
+
+	resourcesLoaded++;
 
 	var index;
 	for( index in paths ) {
@@ -46,6 +56,9 @@ function loadResources(loader,paths,resources) {
 			loadResources(loader,paths,resources);
 		} else {
 			// console.log("Loading: "+index+" , "+rIndex+" , "+paths[index][rIndex]);
+			$('#loading-progress-bar').css('width',( resourcesLoaded / totalResources * 100 )+'%');
+			$('#loading-file').text(rIndex);
+			console.log(resourcesLoaded+' / '+totalResources);
 			loader.load( paths[index][rIndex], function (geometry, materials) {
 				delete paths[index][rIndex];
 				if( resources[index] == undefined ) {
@@ -71,9 +84,12 @@ var camera,
 var SCREEN_WIDTH = window.innerWidth;
 var SCREEN_HEIGHT = window.innerHeight;
 
+var flashlight;
+var fog;
+
 function init() {
 	
-	$('#loading').remove();
+	$('#loading-file').text("Randomizing Trees");
 	scene = new THREE.Scene();
 
 	camera = new THREE.PerspectiveCamera( 45, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 30000 );
@@ -97,7 +113,7 @@ function init() {
 	for( treeKey in resources['tree'] ) {
 		treeKeys.push(treeKey);
 	}
-	console.log(treeKeys);
+	//console.log(treeKeys);
 
 	var lod;
 
@@ -121,6 +137,8 @@ function init() {
 		scene.add(lod);
 	}
 
+	$('#loading-file').text("Adding Clutter");
+
 	// FERN
 	for( i = 0; i < 5000 ; i++ ) {
 		lod = new THREE.LOD();
@@ -141,9 +159,8 @@ function init() {
 		scene.add(lod);
 	}
 
-
-	// IVY
 	/*
+	// IVY
 	var xIvy,
 		zIvy,
 		radiusIvy,
@@ -167,6 +184,7 @@ function init() {
 		}
 	}
 	*/
+	
 
 	/*
 	for( i = 0; i < 1000 ; i++ ) {
@@ -179,12 +197,34 @@ function init() {
 		scene.add( object );
 	}
 	*/
-	
-	scene.add( new THREE.AmbientLight( 0xefefef ) );
 
+	$('#loading').remove();
+	
+	scene.add( new THREE.AmbientLight( 0x404040 ) );
+
+	// Moon
+	var moon = new THREE.DirectionalLight( 0xeeeeaa );
+	moon.intensity = 1.0;
+	moon.castShadow = true;
+	moon.position.set(-32000,-32000,10000);
+	moon.shadowCameraVisible = true;
+	scene.add(moon);
+
+	fog = new THREE.Fog( 0x111111, 5000, 25000 );
+	// scene.fog = new THREE.FogExp2( 0xcccccc, 0.0001 );
+	scene.fog = fog;
+
+	/*
+	flashlight = new THREE.PointLight( 0xffffff, 1.0,  );
+	flashlight.intensity = 1.0;
+	flashlight.distance = 100;
+	flashlight.position = camera.position;
+	scene.add(flashlight);
+	*/
+	
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize( window.innerWidth, window.innerHeight );
-	renderer.setClearColorHex( 0xcccccc, 1 );
+	renderer.setClearColorHex( 0x000000, 1 );
 
 	document.body.appendChild( renderer.domElement );
 
@@ -242,6 +282,12 @@ function update() {
 
 
 	camera.lookAt({x:0,y:250,z:0});
+
+	/*
+	flashlight.position = camera.position;
+	flashlight.lookAt({x:0,y:250,z:0});
+	*/
+
 	scene.traverse( function ( object ) { if ( object instanceof THREE.LOD ) { object.update( camera ); } } );
 }
 
