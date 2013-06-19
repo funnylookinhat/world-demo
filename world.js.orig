@@ -72,7 +72,10 @@ var SCREEN_WIDTH = window.innerWidth;
 var SCREEN_HEIGHT = window.innerHeight;
 
 function init() {
+<<<<<<< HEAD
+=======
 	
+>>>>>>> 1eef785d90d668a007e6c04e65cf4a36ab946f21
 	$('#loading').remove();
 	scene = new THREE.Scene();
 

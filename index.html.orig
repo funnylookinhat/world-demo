@@ -1,0 +1,11 @@
+<html>
+	<head>
+		<link href="css/canvas.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<div id="loading"><center><br><br><br><br><h1>Loading resources...</h1><br><h2>This might take a minute or two...</h2></center></div>
+		<script type="text/javascript" src="js/jquery-1.9.0.min.js"></script>
+		<script type="text/javascript" src="include-three.js/three.min.js"></script>
+		<script type="text/javascript" src="world.js"></script>
+	</body>
+</html>
