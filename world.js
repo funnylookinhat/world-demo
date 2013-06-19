@@ -85,6 +85,7 @@ var SCREEN_WIDTH = window.innerWidth;
 var SCREEN_HEIGHT = window.innerHeight;
 
 var flashlight;
+var toplight;
 var fog;
 
 function init() {
@@ -200,16 +201,23 @@ function init() {
 
 	$('#loading').remove();
 	
-	scene.add( new THREE.AmbientLight( 0x404040 ) );
+	// scene.add( new THREE.AmbientLight( 0x999999 ) );
 
 	// Moon
 	var moon = new THREE.DirectionalLight( 0xeeeeaa );
 	moon.intensity = 1.0;
 	moon.castShadow = true;
-	moon.position.set(-32000,-32000,10000);
+	moon.position.set(-32000,10000,-32000);
 	moon.shadowCameraVisible = true;
 	scene.add(moon);
 
+	var toplight = new THREE.DirectionalLight( 0x999999 );
+	toplight.intensity = 1.0;
+	toplight.castShadow = true;
+	toplight.position.set(0,10000,0);
+	toplight.shadowCameraVisible = true;
+	scene.add(toplight);
+	
 	fog = new THREE.Fog( 0x111111, 5000, 25000 );
 	// scene.fog = new THREE.FogExp2( 0xcccccc, 0.0001 );
 	scene.fog = fog;
