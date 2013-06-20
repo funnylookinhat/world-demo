@@ -45,7 +45,10 @@ function loadResources(loader,paths,resources) {
 	}
 
 	if( typeof index == 'undefined' ) {
-		init();
+		$('#loading-file').text("Randomizing Trees and Clutter");
+		setTimeout(function() {
+			init();
+		},50);
 	} else {
 		var rIndex;
 		for( rIndex in paths[index] ) {
@@ -90,7 +93,7 @@ var fog;
 
 function init() {
 	
-	$('#loading-file').text("Randomizing Trees");
+	
 	scene = new THREE.Scene();
 
 	camera = new THREE.PerspectiveCamera( 45, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 30000 );
@@ -269,33 +272,41 @@ var cameraRadius = 35000;
 var cameraDelta = -50;
 var cameraAbs = 35000;
 
+var startUpdate;
+var firstUpdate = true;
+
 function update() {
-	// Update positions / angles / etc.
-
-	camera.position.y = 500;
-	/*
-	camera.position.z = 20000;
-	camera.position.x = 20000;
-	*/
-
-	cameraRadius += cameraDelta;
-	if( Math.abs(cameraRadius) > cameraAbs ) {
-		cameraDelta *= -1;
-		cameraRadius += cameraDelta;
+	if( firstUpdate ) {
+		firstUpdate = false;
+		camera.position.y = 500;
+		var cameraAngle = Date.now() * 0.00005;
+		camera.position.z = cameraRadius * Math.cos(cameraAngle);
+		camera.position.x = cameraRadius * Math.sin(cameraAngle);
+		camera.lookAt({x:0,y:250,z:0});
 	}
-	var cameraAngle = Date.now() * 0.00005;
 
-	camera.position.z = cameraRadius * Math.cos(cameraAngle);
-	camera.position.x = cameraRadius * Math.sin(cameraAngle);
+	if( ! startUpdate ||
+		startUpdate < Date.now() ) {
+		startUpdate = false;
+		
+		camera.position.y = 500;
+		cameraRadius += cameraDelta;
+		if( Math.abs(cameraRadius) > cameraAbs ) {
+			cameraDelta *= -1;
+			cameraRadius += cameraDelta;
+		}
+		var cameraAngle = Date.now() * 0.00005;
+		camera.position.z = cameraRadius * Math.cos(cameraAngle);
+		camera.position.x = cameraRadius * Math.sin(cameraAngle);
+		camera.lookAt({x:0,y:250,z:0});
 
+		/*
+		flashlight.position = camera.position;
+		flashlight.lookAt({x:0,y:250,z:0});
+		*/
+	}
 
-	camera.lookAt({x:0,y:250,z:0});
-
-	/*
-	flashlight.position = camera.position;
-	flashlight.lookAt({x:0,y:250,z:0});
-	*/
-
+	// Update LOD
 	scene.traverse( function ( object ) { if ( object instanceof THREE.LOD ) { object.update( camera ); } } );
 }
 
@@ -312,6 +323,7 @@ window.requestAnimFrame = (function(){
 })();
 
 function run() {
+	startUpdate = Date.now() + 3000;
 	(function animloop(){
 		requestAnimFrame(animloop);
 		stats.begin();

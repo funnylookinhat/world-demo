@@ -25,6 +25,12 @@ html, body {
 	margin: 0px 0px 10px 0px;
 }
 
+#loading img.preview {
+	position: absolute;
+	top: -10000;
+	left: -10000;
+}
+
 h3#loading-file {
 	text-align: center;
 	margin: 10px 0px 10px 0px;
